@@ -10,20 +10,41 @@ function convertUrl(url) {
         const urlMatch = url.trim().match(/https?:\/\/[^\s]+/);
         if (!urlMatch) return null;
         let extractedUrl = urlMatch[0];
-        // Normalizar: quitar www. si está presente
-        extractedUrl = extractedUrl.replace('://www.', '://');
-        const parsedUrl = new URL(extractedUrl);
-        const path = parsedUrl.pathname;
 
-        // Facebook URL handling
-        if (parsedUrl.hostname === 'facebook.com') {
+        // Manejar URLs con parámetros de consulta
+        if (extractedUrl.includes('?')) {
+            extractedUrl = extractedUrl.split('?')[0];
+        }
+
+        // Normalizar: quitar www. si está presente y manejar subdominios
+        extractedUrl = extractedUrl.replace('://www.', '://');
+        extractedUrl = extractedUrl.replace('://m.', '://'); // Manejar m. para móvil
+
+        const parsedUrl = new URL(extractedUrl);
+        const hostname = parsedUrl.hostname.toLowerCase();
+        let path = parsedUrl.pathname;
+
+        // Eliminar barra diagonal final si existe
+        if (path.endsWith('/')) {
+            path = path.slice(0, -1);
+        }
+
+        // Facebook URL handling - incluir m.facebook.com y www.facebook.com
+        if (hostname.includes('facebook.com')) {
             // /videos/{id}
             let match = path.match(/\/videos\/(\d+)/);
             if (match) {
                 return 'https://tk.lueyo.es/f/' + match[1];
             }
-            // /share/{id}/
-            match = path.match(/\/share\/([A-Za-z0-9]{10})/);
+            /// share/v/{id}
+            // https://www.facebook.com/share/v/1AsA8CNjjA/ -> https://tk.lueyo.es/f/1AsA8CNjjA
+            match = path.match(/\/share\/v\/(\w+)/);
+            if (match) {
+                return 'https://tk.lueyo.es/f/' + match[1];
+            }
+
+            // /share/{id}
+            match = path.match(/\/share\/([A-Za-z0-9]+)/);
             if (match) {
                 return 'https://tk.lueyo.es/f/' + match[1];
             }
@@ -32,50 +53,73 @@ function convertUrl(url) {
             if (match) {
                 return 'https://tk.lueyo.es/f/' + match[1];
             }
-        }
-        // TikTok URL handling
-        if (parsedUrl.hostname === 'vm.tiktok.com') {
-            let path = parsedUrl.pathname;
-            if (path.endsWith('/')) {
-                path = path.slice(0, -1);
+            // /watch/{id}
+            match = path.match(/\/watch\/(\d+)/);
+            if (match) {
+                return 'https://tk.lueyo.es/f/' + match[1];
             }
-            return 'https://tk.lueyo.es/t' + path;
-        } else if (parsedUrl.hostname === 'www.tiktok.com') {
-            let path = parsedUrl.pathname;
-            if (path.endsWith('/')) {
-                path = path.slice(0, -1);
-            }
-            return 'https://tk.lueyo.es/t' + path;
         }
-        // Instagram URL handling
-        else if (parsedUrl.hostname === 'www.instagram.com') {
-            const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
-            // Check if path starts with 'p' or 'reel' and has a code after it
-            if ((pathParts[0] === 'p' || pathParts[0] === 'reel') && pathParts.length > 1) {
+
+        // TikTok URL handling - incluir variaciones
+        if (hostname === 'vm.tiktok.com' || hostname === 'vt.tiktok.com') {
+            let videoId = path.replace('/', '');
+            if (videoId) {
+                return 'https://tk.lueyo.es/t/' + videoId;
+            }
+        } else if (hostname.includes('tiktok.com')) {
+            // Manejar URLs completas de TikTok
+            const match = path.match(/\/@[^\/]+\/video\/(\d+)/);
+            if (match) {
+                return 'https://tk.lueyo.es/t/' + match[1];
+            }
+        }
+
+        // Instagram URL handling - incluir variaciones
+        else if (hostname.includes('instagram.com')) {
+            const pathParts = path.split('/').filter(Boolean);
+
+            // Posts normales /p/{code}/
+            if (pathParts[0] === 'p' && pathParts.length >= 2) {
                 const code = pathParts[1];
                 return 'https://tk.lueyo.es/i/' + code;
-            } else {
-                return null;
+            }
+
+            // Reels /reel/{code}/
+            if (pathParts[0] === 'reel' && pathParts.length >= 2) {
+                const code = pathParts[1];
+                return 'https://tk.lueyo.es/i/' + code;
+            }
+
+            // Stories /stories/{username}/{code}/
+            if (pathParts[0] === 'stories' && pathParts.length >= 3) {
+                const code = pathParts[2];
+                return 'https://tk.lueyo.es/i/' + code;
             }
         }
-        // X and Twitter URL handling
-        else if (parsedUrl.hostname === 'x.com' || parsedUrl.hostname === 'twitter.com') {
-            const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
-            // Expecting path like: username/status/id and possibly more
+
+        // X y Twitter URL handling - incluir variaciones
+        else if (hostname === 'x.com' || hostname === 'twitter.com' || hostname === 'mobile.twitter.com') {
+            const pathParts = path.split('/').filter(Boolean);
+
+            // Status URLs /username/status/{id}
             if (pathParts.length >= 3 && pathParts[1] === 'status') {
                 const id = pathParts[2];
-                // Validate id is numeric (optional)
+                // Validar que sea numérico
                 if (/^\d+$/.test(id)) {
                     return 'https://tk.lueyo.es/x/' + id;
-                } else {
-                    return null;
                 }
-            } else {
-                return null;
             }
-        } else {
-            return null;
+
+            // Status URLs con nombre de usuario después
+            if (pathParts.length >= 4 && pathParts[2] === 'status') {
+                const id = pathParts[3];
+                if (/^\d+$/.test(id)) {
+                    return 'https://tk.lueyo.es/x/' + id;
+                }
+            }
         }
+
+        return null;
     } catch (e) {
         return null;
     }
