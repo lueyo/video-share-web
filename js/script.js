@@ -161,3 +161,7 @@ clearInputBtn.addEventListener('click', (e) => {
     clearInputBtn.style.display = 'none';
     inputUrl.focus();
 });
+
+// ping https://tk.lueyo.es/ping
+
+fetch('https://tk.lueyo.es/ping')
