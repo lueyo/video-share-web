@@ -4,81 +4,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="https://avatars.githubusercontent.com/u/84575656">
-    <title>Convertidor de enlaces para compartir</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 0.6rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 1rem;
-        }
-
-        button {
-            padding: 0.6rem 1.2rem;
-            font-size: 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 0.5rem;
-            transition: background-color 0.3s ease;
-        }
-
-        button.convert-btn {
-            background-color: #25f4ee;
-            color: #000;
-        }
-
-        button.convert-btn:hover {
-            background-color: #1ac9d8;
-        }
-
-        button.copy-btn {
-            background-color: #4caf50;
-            color: white;
-        }
-
-        button.copy-btn:hover {
-            background-color: #3e8e41;
-        }
-
-        .result {
-            margin-top: 1rem;
-            padding: 0.6rem;
-            background-color: #e0f7fa;
-            border-radius: 4px;
-            word-break: break-all;
-            font-weight: bold;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
+    <title>Comparte videos de redes sociales</title>
+    <meta name="description" content="Comparte videos de tiktok, facebook, instagram y X a tus amigos que no tengan cuenta creada sin necesidad de descargarlos.">
+    <meta name="author" content="Lueyo">
+    <meta name="keywords" content="share videos, compartir, sin cuenta, facebook, tiktok, instagram, twitter, x, without register, sharer, video sharer">
+    <meta property="og:image" content="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
+    <meta property="og:title" content="Comparte videos de redes sin cuenta ni descarga">
+    <meta property="og:description" content="Comparte videos de tiktok, facebook, instagram y X a tus amigos que no tengan cuenta creada sin necesidad de descargarlos.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:title" content="Comparte videos de redes sin cuenta ni descarga">
+    <meta name="twitter:description" content="Comparte videos de tiktok, facebook, instagram y X a tus amigos que no tengan cuenta creada sin necesidad de descargarlos.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
+    
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -97,126 +36,8 @@
         <div id="result" class="result hidden"></div>
     </div>
 
-    <script>
-        const inputUrl = document.getElementById('inputUrl');
-        const convertBtn = document.getElementById('convertBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const resultDiv = document.getElementById('result');
-        const clearInputBtn = document.getElementById('clearInputBtn');
-
-        function convertUrl(url) {
-            try {
-                // Extraer solo la primera URL si hay texto extra
-                const urlMatch = url.trim().match(/https?:\/\/[^\s]+/);
-                if (!urlMatch) return null;
-                let extractedUrl = urlMatch[0];
-                // Normalizar: quitar www. si está presente
-                extractedUrl = extractedUrl.replace('://www.', '://');
-                const parsedUrl = new URL(extractedUrl);
-                const path = parsedUrl.pathname;
-
-                // Facebook URL handling
-                if (parsedUrl.hostname === 'facebook.com') {
-                    // /videos/{id}
-                    let match = path.match(/\/videos\/(\d+)/);
-                    if (match) {
-                        return 'https://tk.lueyo.es/f/' + match[1];
-                    }
-                    // /share/{id}/
-                    match = path.match(/\/share\/([A-Za-z0-9]{10})/);
-                    if (match) {
-                        return 'https://tk.lueyo.es/f/' + match[1];
-                    }
-                    // /reel/{id}
-                    match = path.match(/\/reel\/(\d+)/);
-                    if (match) {
-                        return 'https://tk.lueyo.es/f/' + match[1];
-                    }
-                }
-                // TikTok URL handling
-                if (parsedUrl.hostname === 'vm.tiktok.com') {
-                    let path = parsedUrl.pathname;
-                    if (path.endsWith('/')) {
-                        path = path.slice(0, -1);
-                    }
-                    return 'https://tk.lueyo.es/t' + path;
-                } else if (parsedUrl.hostname === 'www.tiktok.com') {
-                    let path = parsedUrl.pathname;
-                    if (path.endsWith('/')) {
-                        path = path.slice(0, -1);
-                    }
-                    return 'https://tk.lueyo.es/t' + path;
-                }
-                // Instagram URL handling
-                else if (parsedUrl.hostname === 'www.instagram.com') {
-                    const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
-                    // Check if path starts with 'p' or 'reel' and has a code after it
-                    if ((pathParts[0] === 'p' || pathParts[0] === 'reel') && pathParts.length > 1) {
-                        const code = pathParts[1];
-                        return 'https://tk.lueyo.es/i/' + code;
-                    } else {
-                        return null;
-                    }
-                }
-                // X and Twitter URL handling
-                else if (parsedUrl.hostname === 'x.com' || parsedUrl.hostname === 'twitter.com') {
-                    const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
-                    // Expecting path like: username/status/id and possibly more
-                    if (pathParts.length >= 3 && pathParts[1] === 'status') {
-                        const id = pathParts[2];
-                        // Validate id is numeric (optional)
-                        if (/^\d+$/.test(id)) {
-                            return 'https://tk.lueyo.es/x/' + id;
-                        } else {
-                            return null;
-                        }
-                    } else {
-                        return null;
-                    }
-                } else {
-                    return null;
-                }
-            } catch (e) {
-                return null;
-            }
-        }
-
-        convertBtn.addEventListener('click', () => {
-            const input = inputUrl.value;
-            const converted = convertUrl(input);
-            if (converted) {
-                resultDiv.textContent = converted;
-                resultDiv.classList.remove('hidden');
-                copyBtn.classList.remove('hidden');
-            } else {
-                resultDiv.textContent = 'Introduce un enlace válido de X, TikTok o Instagram.';
-                resultDiv.classList.remove('hidden');
-                copyBtn.classList.add('hidden');
-            }
-        });
-
-        copyBtn.addEventListener('click', () => {
-            const text = resultDiv.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                copyBtn.textContent = '¡Copiado!';
-                setTimeout(() => {
-                    copyBtn.textContent = 'Copiar enlace';
-                }, 2000);
-            }).catch(() => {
-                alert('No se pudo copiar el enlace. Por favor, cópialo manualmente.');
-            });
-        });
-
-        // Mostrar/ocultar el botón de limpiar según el contenido del input
-        inputUrl.addEventListener('input', () => {
-            clearInputBtn.style.display = inputUrl.value ? 'block' : 'none';
-        });
-        clearInputBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            inputUrl.value = '';
-            clearInputBtn.style.display = 'none';
-            inputUrl.focus();
-        });
+    <script src="js/script.js">
+      
     </script>
 </body>
 
