@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(135deg, #6b73ff, #000dff);
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Redirecting...</h1>
+    <h2>El acortador de links se desactiva automáticamente, puede tardar hasta 50 segundos en iniciar</h2>
+    <div class="spinner"></div>
+
+    <script>
+        const path = window.location.pathname;
+
+        if (path !== '/') {
+            const id = path.split('/')[1];
+            if (id) {
+                // Make ping request before redirecting
+                fetch(`https://tk.lueyo.es/ping`)
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = `https://tk.lueyo.es/${id}`;
+                        } else {
+                            throw new Error('Ping failed');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error during ping:', error);
+                        // Fallback redirect after ping fails
+                        setTimeout(() => {
+                            window.location.href = `https://tk.lueyo.es/${id}`;
+                        }, 1000);
+                    });
+            } else {
+                setTimeout(() => {
+                    window.location.href = `https://ttk.lueyo.es`;
+                }, 100);
+            }
+        }
+    </script>
+
+
+    <footer>
+        &#127279; 2025 Lueyo. Ningún derecho reservado.
+    </footer>
+</body>
+
+</html>
