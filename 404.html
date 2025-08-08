@@ -60,14 +60,15 @@
 
 <body>
     <h1>Redirecting...</h1>
-    <h2>El acortador de links se desactiva automáticamente, puede tardar hasta 50 segundos en iniciar</h2>
+    <h2>El servidor se desactiva automáticamente, puede tardar hasta 50 segundos en iniciar</h2>
     <div class="spinner"></div>
 
     <script>
         const path = window.location.pathname;
 
         if (path !== '/') {
-            const id = path.split('/')[1];
+            // Get everything after the first slash
+            const id = path.substring(1);
             if (id) {
                 // Make ping request before redirecting
                 fetch(`https://tk.lueyo.es/ping`)
