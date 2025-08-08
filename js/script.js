@@ -34,29 +34,29 @@ function convertUrl(url) {
             // /videos/{id}
             let match = path.match(/\/videos\/(\d+)/);
             if (match) {
-                return 'https://tk.lueyo.es/f/' + match[1];
+                return 'https://ttk.lueyo.es/f/' + match[1];
             }
             /// share/v/{id}
-            // https://www.facebook.com/share/v/1AsA8CNjjA/ -> https://tk.lueyo.es/f/1AsA8CNjjA
+            // https://www.facebook.com/share/v/1AsA8CNjjA/ -> https://ttk.lueyo.es/f/1AsA8CNjjA
             match = path.match(/\/share\/v\/(\w+)/);
             if (match) {
-                return 'https://tk.lueyo.es/f/' + match[1];
+                return 'https://ttk.lueyo.es/f/' + match[1];
             }
 
             // /share/{id}
             match = path.match(/\/share\/([A-Za-z0-9]+)/);
             if (match) {
-                return 'https://tk.lueyo.es/f/' + match[1];
+                return 'https://ttk.lueyo.es/f/' + match[1];
             }
             // /reel/{id}
             match = path.match(/\/reel\/(\d+)/);
             if (match) {
-                return 'https://tk.lueyo.es/f/' + match[1];
+                return 'https://ttk.lueyo.es/f/' + match[1];
             }
             // /watch/{id}
             match = path.match(/\/watch\/(\d+)/);
             if (match) {
-                return 'https://tk.lueyo.es/f/' + match[1];
+                return 'https://ttk.lueyo.es/f/' + match[1];
             }
         }
 
@@ -64,13 +64,13 @@ function convertUrl(url) {
         if (hostname === 'vm.tiktok.com' || hostname === 'vt.tiktok.com') {
             let videoId = path.replace('/', '');
             if (videoId) {
-                return 'https://tk.lueyo.es/t/' + videoId;
+                return 'https://ttk.lueyo.es/t/' + videoId;
             }
         } else if (hostname.includes('tiktok.com')) {
             // Manejar URLs completas de TikTok
             const match = path.match(/\/@[^\/]+\/video\/(\d+)/);
             if (match) {
-                return 'https://tk.lueyo.es/t/' + match[1];
+                return 'https://ttk.lueyo.es/t/' + match[1];
             }
         }
 
@@ -81,19 +81,19 @@ function convertUrl(url) {
             // Posts normales /p/{code}/
             if (pathParts[0] === 'p' && pathParts.length >= 2) {
                 const code = pathParts[1];
-                return 'https://tk.lueyo.es/i/' + code;
+                return 'https://ttk.lueyo.es/i/' + code;
             }
 
             // Reels /reel/{code}/
             if (pathParts[0] === 'reel' && pathParts.length >= 2) {
                 const code = pathParts[1];
-                return 'https://tk.lueyo.es/i/' + code;
+                return 'https://ttk.lueyo.es/i/' + code;
             }
 
             // Stories /stories/{username}/{code}/
             if (pathParts[0] === 'stories' && pathParts.length >= 3) {
                 const code = pathParts[2];
-                return 'https://tk.lueyo.es/i/' + code;
+                return 'https://ttk.lueyo.es/i/' + code;
             }
         }
 
@@ -106,7 +106,7 @@ function convertUrl(url) {
                 const id = pathParts[2];
                 // Validar que sea numérico
                 if (/^\d+$/.test(id)) {
-                    return 'https://tk.lueyo.es/x/' + id;
+                    return 'https://ttk.lueyo.es/x/' + id;
                 }
             }
 
@@ -114,7 +114,7 @@ function convertUrl(url) {
             if (pathParts.length >= 4 && pathParts[2] === 'status') {
                 const id = pathParts[3];
                 if (/^\d+$/.test(id)) {
-                    return 'https://tk.lueyo.es/x/' + id;
+                    return 'https://ttk.lueyo.es/x/' + id;
                 }
             }
         }
