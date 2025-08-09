@@ -68,9 +68,9 @@ function convertUrl(url) {
             }
         } else if (hostname.includes('tiktok.com')) {
             // Manejar URLs completas de TikTok
-            const match = path.match(/\/@[^\/]+\/video\/(\d+)/);
+            const match = path.match(/\/(@[^\/]+)\/video\/(\d+)/);
             if (match) {
-                return 'https://ttk.lueyo.es/t/' + match[1];
+                return 'https://ttk.lueyo.es/t/' + match[1] + '/video/' + match[2];
             }
         }
 
