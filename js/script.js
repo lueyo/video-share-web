@@ -38,7 +38,7 @@ function convertUrl(url) {
             }
             /// share/v/{id}
             // https://www.facebook.com/share/v/1AsA8CNjjA/ -> https://ttk.lueyo.es/f/1AsA8CNjjA
-            match = path.match(/\/share\/v\/(\w+)/);
+            match = path.match(/\/share\/.\/(\w+)/);
             if (match) {
                 return 'https://ttk.lueyo.es/f/' + match[1];
             }
