@@ -70,7 +70,9 @@ function convertUrl(url) {
             // Manejar URLs completas de TikTok
             const match = path.match(/\/(@[^\/]+)\/video\/(\d+)/);
             if (match) {
-                return 'https://ttk.lueyo.es/t/' + match[1] + '/video/' + match[2];
+                // Remove the @ symbol from username and change format to /t/username/id
+                const username = match[1].replace('@', '');
+                return 'https://ttk.lueyo.es/t/' + username + '/' + match[2];
             }
         }
 
