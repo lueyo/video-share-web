@@ -72,7 +72,7 @@ function convertUrl(url) {
             if (match) {
                 
                 const videoId = match[2];
-                return 'https://ttk.lueyo.es/l/' + videoId;
+                return 'https://ttk.lueyo.es/t/l/' + videoId;
             }
         }
 
