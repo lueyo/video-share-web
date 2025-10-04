@@ -91,6 +91,12 @@ function convertUrl(url) {
                 const code = pathParts[1];
                 return 'https://ttk.lueyo.es/i/' + code;
             }
+            // Reels /reels/{code}/
+            if (pathParts[0] === 'reels' && pathParts.length >= 2) {
+                const code = pathParts[1];
+                return 'https://ttk.lueyo.es/i/' + code;
+            }
+
 
             // Stories /stories/{username}/{code}/
             if (pathParts[0] === 'stories' && pathParts.length >= 3) {
