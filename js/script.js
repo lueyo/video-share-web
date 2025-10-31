@@ -3,6 +3,7 @@ const convertBtn = document.getElementById('convertBtn');
 const copyBtn = document.getElementById('copyBtn');
 const resultDiv = document.getElementById('result');
 const clearInputBtn = document.getElementById('clearInputBtn');
+let currentConverted = null;
 
 function convertUrl(url) {
     try {
@@ -70,7 +71,7 @@ function convertUrl(url) {
             // Manejar URLs completas de TikTok
             const match = path.match(/\/(@[^\/]+)\/video\/(\d+)/);
             if (match) {
-                
+
                 const videoId = match[2];
                 return 'https://ttk.lueyo.es/t/l/' + videoId;
             }
@@ -137,26 +138,38 @@ convertBtn.addEventListener('click', () => {
     const input = inputUrl.value;
     const converted = convertUrl(input);
     if (converted) {
-        resultDiv.textContent = converted;
+        currentConverted = converted;
+        resultDiv.innerHTML = `<a href="${converted}" target="_blank">${converted}</a>`;
         resultDiv.classList.remove('hidden');
         copyBtn.classList.remove('hidden');
+        // Auto copy on successful conversion
+        navigator.clipboard.writeText(converted).then(() => {
+            copyBtn.textContent = '¡Copiado!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copiar enlace';
+            }, 2000);
+        }).catch(() => {
+            alert('No se pudo copiar el enlace. Por favor, cópialo manualmente.');
+        });
     } else {
         resultDiv.textContent = 'Introduce un enlace válido de X, TikTok o Instagram.';
         resultDiv.classList.remove('hidden');
         copyBtn.classList.add('hidden');
+        currentConverted = null;
     }
 });
 
 copyBtn.addEventListener('click', () => {
-    const text = resultDiv.textContent;
-    navigator.clipboard.writeText(text).then(() => {
-        copyBtn.textContent = '¡Copiado!';
-        setTimeout(() => {
-            copyBtn.textContent = 'Copiar enlace';
-        }, 2000);
-    }).catch(() => {
-        alert('No se pudo copiar el enlace. Por favor, cópialo manualmente.');
-    });
+    if (currentConverted) {
+        navigator.clipboard.writeText(currentConverted).then(() => {
+            copyBtn.textContent = '¡Copiado!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copiar enlace';
+            }, 2000);
+        }).catch(() => {
+            alert('No se pudo copiar el enlace. Por favor, cópialo manualmente.');
+        });
+    }
 });
 
 // Mostrar/ocultar el botón de limpiar según el contenido del input
