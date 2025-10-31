@@ -1,70 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/x-icon"
-            href="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
-        <title>Comparte videos de redes sociales</title>
-        <meta name="generator" content="Custom Project">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon"
+        href="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
+    <title>Comparte videos de redes sociales</title>
+    <meta name="generator" content="Custom Project">
 
-        <!-- Canonical URL -->
-        <link rel="canonical" href="https://ttk.lueyo.es/">
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ttk.lueyo.es/">
 
-        <!-- Primary Meta Tags -->
-        <title>Comparte videos de redes sociales | Lueyo</title>
-        <meta name="title" content="Comparte videos de redes sociales | Lueyo">
-        <meta name="description"
-            content="Comparte videos de TikTok, Facebook, Instagram y X a tus amigos que no tengan cuenta creada, sin necesidad de descargarlos.">
-        <meta name="author" content="Lueyo">
-        <meta name="keywords"
-            content="share videos, compartir, sin cuenta, facebook, tiktok, instagram, twitter, x, without register, sharer, video sharer">
+    <!-- Primary Meta Tags -->
+    <title>Comparte videos de redes sociales | Lueyo</title>
+    <meta name="title" content="Comparte videos de redes sociales | Lueyo">
+    <meta name="description"
+        content="Comparte videos de TikTok, Facebook, Instagram y X a tus amigos que no tengan cuenta creada, sin necesidad de descargarlos.">
+    <meta name="author" content="Lueyo">
+    <meta name="keywords"
+        content="share videos, compartir, sin cuenta, facebook, tiktok, instagram, twitter, x, without register, sharer, video sharer">
 
-        <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://ttk.lueyo.es/">
-        <meta property="og:title"
-            content="Comparte videos de redes sin cuenta ni descarga | Lueyo">
-        <meta property="og:description"
-            content="Comparte videos de TikTok, Facebook, Instagram y X a tus amigos que no tengan cuenta creada, sin necesidad de descargarlos.">
-        <meta property="og:image"
-            content="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ttk.lueyo.es/">
+    <meta property="og:title" content="Comparte videos de redes sin cuenta ni descarga | Lueyo">
+    <meta property="og:description"
+        content="Comparte videos de TikTok, Facebook, Instagram y X a tus amigos que no tengan cuenta creada, sin necesidad de descargarlos.">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
 
-        <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://ttk.lueyo.es/">
-        <meta property="twitter:title"
-            content="Comparte videos de redes sin cuenta ni descarga | Lueyo">
-        <meta property="twitter:description"
-            content="Comparte videos de TikTok, Facebook, Instagram y X a tus amigos que no tengan cuenta creada, sin necesidad de descargarlos.">
-        <meta property="twitter:image"
-            content="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ttk.lueyo.es/">
+    <meta property="twitter:title" content="Comparte videos de redes sin cuenta ni descarga | Lueyo">
+    <meta property="twitter:description"
+        content="Comparte videos de TikTok, Facebook, Instagram y X a tus amigos que no tengan cuenta creada, sin necesidad de descargarlos.">
+    <meta property="twitter:image"
+        content="https://raw.githubusercontent.com/lueyo/video-share-web/refs/heads/main/lueyolinks.png">
 
-        <link rel="stylesheet" href="css/styles.css">
-    </head>
-
-    <body>
-        <div class="container">
-            <h1>Convertidor de enlaces a los de Lueyo</h1>
-            <div style="position: relative;">
-                <input type="text" id="inputUrl"
-                    placeholder="Enlace de X, Instagram, Tiktok o Facebook" />
-                <button id="clearInputBtn" title="Limpiar"
-                    style="position: absolute; right: 8px; top: 35%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #888; display: none;"
-                    tabindex="-1">&#10006;</button>
-            </div>
-            <div>
-                <button class="convert-btn" id="convertBtn">Convertir</button>
-                <button class="copy-btn hidden" id="copyBtn">Copiar
-                    enlace</button>
-            </div>
-            <div id="result" class="result hidden"></div>
-        </div>
-
-        <script src="js/script.js">
-      
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="pwa/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register('pwa/service-worker.js').then(function (registration) {
+                    console.log('ServiceWorker registered');
+                }).catch(function (err) {
+                    console.log('ServiceWorker error: ', err);
+                });
+            })
+        }
     </script>
-    </body>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Convertidor de enlaces a los de Lueyo</h1>
+        <div style="position: relative;">
+            <input type="text" id="inputUrl" placeholder="Enlace de X, Instagram, Tiktok o Facebook" />
+            <button id="clearInputBtn" title="Limpiar"
+                style="position: absolute; right: 8px; top: 35%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #888; display: none;"
+                tabindex="-1">&#10006;</button>
+        </div>
+        <div>
+            <button class="convert-btn" id="convertBtn">Convertir</button>
+            <button class="copy-btn hidden" id="copyBtn">Copiar
+                enlace</button>
+        </div>
+        <div id="result" class="result hidden"></div>
+    </div>
+
+    <script src="js/script.js">
+
+    </script>
+</body>
 
 </html>
