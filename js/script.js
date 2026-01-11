@@ -128,6 +128,21 @@ function convertUrl(url) {
             }
         }
 
+        // Threads URL handling
+        else if (hostname.includes('threads.net')) {
+            const pathParts = path.split('/').filter(Boolean);
+
+            // Formato: /@username/post/CODE o /i/post/CODE
+            // https://www.threads.net/@marilolipellon/post/DS-74VmCbK9
+            // https://www.threads.net/i/post/DS-74VmCbK9
+            if (pathParts.length >= 3 && pathParts[pathParts.length - 2] === 'post') {
+                const code = pathParts[pathParts.length - 1];
+                if (code) {
+                    return 'https://ttk.lueyo.es/h/' + code;
+                }
+            }
+        }
+
         return null;
     } catch (e) {
         return null;
