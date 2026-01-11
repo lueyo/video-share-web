@@ -198,6 +198,4 @@ clearInputBtn.addEventListener('click', (e) => {
     inputUrl.focus();
 });
 
-// ping https://tk.lueyo.es/ping
 
-fetch('https://tk.lueyo.es/ping')
